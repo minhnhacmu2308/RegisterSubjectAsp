@@ -1,0 +1,209 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<main>
+    <div class="container-fluid px-4">
+        <h1 class="mt-4">Quản lí chương trình đào tạo</h1>
+
+
+        <div class="card mb-4">
+            <div class="card-header">
+                @if (ViewBag.Msg != null)
+                {
+                    if (ViewBag.Msg == "1")
+                    {
+                        <div class="alert alert-success">
+                            <strong>Thành công</strong>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="alert alert-danger">
+                            <strong>Chương trình học này đã tồn tại</strong>
+                        </div>
+                    }
+
+                }
+                <button type="button" class="btn btn-success" data-bs-toggle="modal"
+                        data-bs-target="#exampleModalAdd">
+                    Thêm mới
+                </button>
+            </div>
+            <div class="card-body">
+                <table id="datatablesSimple">
+                    <thead>
+                        <tr>
+                            <th>STT</th>
+                            <th>Mã môn học </th>
+                            <th>Tên môn học</th>
+                            <th>Tín chỉ</th>
+                            <th>Khoa/Bộ môn</th>
+                            <th>Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr>
+                        </tr>
+                    </tfoot>
+                    <tbody>
+                        @{
+                            var index = 0;
+                        }
+                        @foreach (var item in ViewBag.List)
+                        {
+                            index++;
+                            var idModelDel = "exampleModalDel" + item.id_course;
+                            var idEx1 = "#exampleModalLabel" + item.id_course;
+                            <tr>
+                                <td>@index</td>
+                                <td>@item.Subject.code</td>
+                                <td>@item.Subject.name</td>
+                                <td>@item.Subject.credit</td>
+                                <td>@item.faculty</td>
+                                <td>
+
+                                    <button style="width:100px" type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                            data-bs-target="@idEx1">
+                                        Sửa
+                                    </button>
+                                    <button type="button" data-bs-toggle="modal" data-bs-target="#@idModelDel" style="width:100px" class="btn btn-danger"> Xóa</button>
+                                    <div class="modal fade" id="@idModelDel" tabindex="-1"
+                                         aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLabel">Bạn chắc chắn muốn xóa ?</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                            aria-label="Close"></button>
+                                                </div>
+
+                                                <div class="modal-body">
+                                                    Khoa/Bộ môn : @item.faculty
+                                                    <form action="/Course/Delete" method="post">
+                                                        <input type="hidden" class="form-control" id="id" name="id" value="@item.id_course">
+                                                        <div class="modal-footer" style="margin-top: 20px">
+                                                            <button style="width:100px" type="button" class="btn btn-secondary"
+                                                                    data-bs-dismiss="modal">
+                                                                Đóng
+                                                            </button>
+                                                            <button style="width:100px" type="submit" class="btn btn-danger"> Xóa</button>
+
+                                                        </div>
+
+                                                    </form>
+
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            var idEx = "exampleModalLabel" + item.id_course;
+                            <div class="modal fade" id="@idEx" tabindex="-1"
+                                 aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Sửa </h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form enctype="multipart/form-data" action="/Course/Update" method="post">
+                                                <div class="col">
+                                                    <div class="col-12">
+                                                        <label for="category-film" class="col-form-label">Khoa/Bộ môn: </label>
+                                                        <input type="hidden" class="form-control" id="daodien" name="id" value="@item.id_course" tabindex="3" required>
+                                                        <input type="text" class="form-control" id="daodien" name="name" value="@item.faculty" tabindex="3" required>
+                                                    </div>
+                                                    <div class="col-12">
+                                                        <label for="category-film" class="col-form-label">Môn học: </label>
+                                                        <select class="form-select" aria-label="Default select example" id="theloai" tabindex="8" name="idsub" required>
+                                                            @foreach (var item1 in ViewBag.Sub)
+                                                            {
+                                                                if (item1.id_subject == item.id_subject)
+                                                                {
+                                                                    <option value="@item1.id_subject" selected>@item1.name</option>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <option value="@item1.id_subject">@item1.name</option>
+                                                                }
+                                                            }
+                                                        </select>
+                                                    </div>
+                                                    
+
+                                                </div>
+
+
+                                                <div class="modal-footer">
+                                                    <button style="width:100px" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                                                    <button style="width:100px" type="submit" class="btn btn-primary">Sửa </button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Modal Update-->
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+</main>
+<!-- Modal Add-->
+<div class="modal fade" id="exampleModalAdd" tabindex="-1"
+     aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Thêm </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form enctype="multipart/form-data" action="/Course/Add" method="post">
+                    <div class="col">
+
+                        <div class="col-12">
+                            <label for="category-film" class="col-form-label">Khoa/Bộ môn: </label>
+                            <input type="text" class="form-control" id="daodien" name="name" tabindex="3" required>
+                        </div>
+                        <div class="col-12">
+                            <label for="category-film" class="col-form-label">Môn học: </label>
+                            <select class="form-select" aria-label="Default select example" id="theloai" tabindex="8" name="idsub" required>
+                                <option value="" selected>Chọn môn học</option>
+                                @foreach (var item1 in ViewBag.Sub)
+                                {
+                                    <option value="@item1.id_subject">@item1.name</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+
+
+                    <div class="modal-footer">
+                        <button style="width:100px" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                        <button style="width:100px" type="submit" class="btn btn-primary">Thêm </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+

@@ -1,34 +1,90 @@
 ﻿
 <div id="layoutSidenav_nav">
-
+    @{ var userInfomatiom = (RegisterSubjectAsp.Models.User)Session["USER"]; }
     <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
         <div class="sb-sidenav-menu">
             <div class="nav">
 
-                <a class="nav-link" href="/AdminHome/Index">
-                    <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                <a class="nav-link collapsed" href="/Home/Index">
+                    <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
                     Bảng điều khiển
+
                 </a>
-                <a class="nav-link" href="/AdminPost/Index">
-                    <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
-                    Manage Subject
-                </a>
-                <a class="nav-link" href="/AdminClient/Index">
-                    <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
-                    Manage Course
-                </a>
-                <a class="nav-link" href="/AdminSource/Index">
-                    <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
-                    Manage Grade
-                </a>
-                <a class="nav-link" href="/AdminClient/Index">
-                    <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
-                    Manage User
-                </a>
-                <a class="nav-link" href="/AdminSource/Index">
-                    <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
-                    Manage Schedule
-                </a>
+                @if (userInfomatiom.Role.id_role == 1)
+                {
+                    <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
+                       data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
+                        <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                        Quản lý thông tin
+                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                    </a>
+                    <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne"
+                         data-bs-parent="#sidenavAccordion">
+                        <nav class="sb-sidenav-menu-nested nav">
+                            <a class="nav-link" href="/User/Index">Sinh viên</a>
+                            <a class="nav-link" href="/User/ListGiangVien">Giảng viên </a>
+
+                        </nav>
+                    </div>
+                    <a class="nav-link collapsed" href="/Subject/Index">
+                        <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                        Quản lý môn học
+
+                    </a>
+
+                    <a class="nav-link collapsed" href="/Grade/Index">
+                        <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                        Quản lý lớp
+
+                    </a>
+                    <a class="nav-link collapsed" href="/Course/Index">
+                        <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                        Chương trình đào tạo
+                    </a>
+                    <a class="nav-link collapsed" href="/Score/Rank">
+                        <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                        Quản lý lịch
+                    </a>
+                }
+                else if (userInfomatiom.Role.id_role == 2)
+                {
+
+                    <a class="nav-link collapsed" href="/User/Index">
+                        <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                        Quản lý học sinh
+
+                    </a>
+                    <a class="nav-link collapsed" href="/Score/Index">
+                        <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                        Quản lý điểm
+
+                    </a>
+                    <a class="nav-link collapsed" href="/Score/Rank">
+                        <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                        Xếp hạng
+                    </a>
+                }
+                else
+                {
+                    <a class="nav-link collapsed" href="/User/Infor">
+                        <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                        Xem thông tin
+
+                    </a>
+                    <a class="nav-link collapsed" href="/Schedule/Index">
+                        <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                        Xem thời khóa biểu
+                    </a>
+                    <a class="nav-link collapsed" href="/Score/ListScoreForStudent?id=@userInfomatiom.id_user">
+                        <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                        Xem điểm
+
+                    </a>
+                    <a class="nav-link collapsed" href="/Score/Rank">
+                        <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                        Xếp hạng
+                    </a>
+                }
             </div>
         </div>
 

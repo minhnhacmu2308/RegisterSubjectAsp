@@ -30,7 +30,7 @@ namespace RegisterSubjectAsp.Controllers
             if(checkLogin != null)
             {
 
-                Session.Add("User",checkLogin);
+                Session.Add("USER",checkLogin);
                 return RedirectToAction("Index", "Home");
             }
             else
@@ -39,6 +39,11 @@ namespace RegisterSubjectAsp.Controllers
                 return View();
             }
 
+        }
+        public ActionResult Logout()
+        {
+            Session.Remove("USER");
+            return Redirect("/");
         }
     }
 }

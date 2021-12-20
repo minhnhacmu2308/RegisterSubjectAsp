@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RegisterSubjectAsp.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -10,8 +11,8 @@ namespace RegisterSubjectAsp.Controllers
     {
         public ActionResult Index()
         {
-            string result = (string)Session["User"];
-            if (string.IsNullOrEmpty(result))
+            var result = (User)Session["USER"];
+            if (result == null)
             {
                 return RedirectToAction("Login", "Authentication");
             }

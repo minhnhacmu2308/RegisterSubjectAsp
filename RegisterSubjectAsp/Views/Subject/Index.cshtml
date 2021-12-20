@@ -1,0 +1,208 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<main>
+    <div class="container-fluid px-4">
+        <h1 class="mt-4">Quản lí môn học</h1>
+
+
+        <div class="card mb-4">
+            <div class="card-header">
+                @if (ViewBag.Msg != null)
+                {
+                    if (ViewBag.Msg == "1")
+                    {
+                        <div class="alert alert-success">
+                            <strong>Thành công</strong>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="alert alert-danger">
+                            <strong>Môn học này đã tồn tại</strong>
+                        </div>
+                    }
+
+                }
+                <button type="button" class="btn btn-success" data-bs-toggle="modal"
+                        data-bs-target="#exampleModalAdd">
+                    Thêm mới
+                </button>
+            </div>
+            <div class="card-body">
+                <table id="datatablesSimple">
+                    <thead>
+                        <tr>
+                            <th>STT</th>
+                            <th>Mã môn học </th>
+                            <th>Tên môn học</th>
+                            <th>Tín chỉ</th>
+                            <th>Ngày bắt đầu</th>
+                            <th>Ngày kết thúc</th>
+                            <th>Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr>
+                        </tr>
+                    </tfoot>
+                    <tbody>
+                        @{
+                            var index = 0;
+                        }
+                        @foreach (var item in ViewBag.List)
+                        {
+                            index++;
+                            var idModelDel = "exampleModalDel" + item.id_subject;
+                            var idEx1 = "#exampleModalLabel" + item.id_subject;
+                        <tr>
+                            <td>@index</td>
+                            <td>@item.code</td>
+                            <td>@item.name</td>
+                            <td>@item.credit</td>
+                            <td>@String.Format("{0:yyyy-MM-dd}", item.start_day)</td>
+                            <td>@String.Format("{0:yyyy-MM-dd}", item.end_day)</td>
+                            <td>
+
+                                <button style="width:100px" type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                        data-bs-target="@idEx1">
+                                    Sửa
+                                </button>
+                                <button type="button" data-bs-toggle="modal" data-bs-target="#@idModelDel" style="width:100px" class="btn btn-danger"> Xóa</button>
+                                <div class="modal fade" id="@idModelDel" tabindex="-1"
+                                     aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel">Bạn chắc chắn muốn xóa ?</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                        aria-label="Close"></button>
+                                            </div>
+
+                                            <div class="modal-body">
+                                                Môn học : @item.name
+                                                <form action="/Subject/Delete" method="post">
+                                                    <input type="hidden" class="form-control" id="id" name="id" value="@item.id_subject">
+                                                    <div class="modal-footer" style="margin-top: 20px">
+                                                        <button style="width:100px" type="button" class="btn btn-secondary"
+                                                                data-bs-dismiss="modal">
+                                                            Đóng
+                                                        </button>
+                                                        <button style="width:100px" type="submit" class="btn btn-danger"> Xóa</button>
+
+                                                    </div>
+
+                                                </form>
+
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                            var idEx = "exampleModalLabel" + item.id_subject;
+                            <div class="modal fade" id="@idEx" tabindex="-1"
+                                 aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Sửa </h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form enctype="multipart/form-data" action="/Subject/Update" method="post">
+                                                <div class="col">
+                                                    <div class="col-12">
+                                                        <label for="category-film" class="col-form-label">Mã môn học: </label>
+                                                        <input type="text" class="form-control" id="daodien" name="code" value="@item.code" tabindex="3" required>
+                                                    </div>
+                                                    <div class="col-12">
+                                                        <label for="category-film" class="col-form-label">Tên môn học: </label>
+                                                        <input type="hidden" class="form-control" id="daodien" name="id" value="@item.id_subject" tabindex="3" required>
+                                                        <input type="text" class="form-control" id="daodien" name="name" value="@item.name" tabindex="3" required>
+                                                    </div>
+                                                    <div class="col-12">
+                                                        <label for="category-film" class="col-form-label">Số tín chỉ: </label>
+                                                        <input type="number" class="form-control" id="daodien" name="credit" value="@item.credit" tabindex="3" required>
+                                                    </div>
+                                                    <div class="col-12">
+                                                        <label for="category-film" class="col-form-label">Ngày bắt đầu: </label>
+                                                        <input type="date" class="form-control" id="daodien" name="start" value="@String.Format("{0:yyyy-MM-dd}", item.start_day)" tabindex="3" required>
+                                                    </div>
+                                                    <div class="col-12">
+                                                        <label for="category-film" class="col-form-label">Ngày kết thúc: </label>
+                                                        <input type="date" class="form-control" id="daodien" name="end" value="@String.Format("{0:yyyy-MM-dd}", item.end_day)" tabindex="3" required>
+                                                    </div>
+
+                                                </div>
+
+
+                                                <div class="modal-footer">
+                                                    <button style="width:100px" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                                                    <button style="width:100px" type="submit" class="btn btn-primary">Sửa </button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Modal Update-->
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+</main>
+<!-- Modal Add-->
+<div class="modal fade" id="exampleModalAdd" tabindex="-1"
+     aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Thêm </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form enctype="multipart/form-data" action="/Subject/Add" method="post">
+                    <div class="col">
+
+                        <div class="col-12">
+                            <label for="category-film" class="col-form-label">Mã môn học: </label>
+                            <input type="text" class="form-control" id="daodien" name="code" tabindex="3" required>
+                        </div>
+                        <div class="col-12">
+                            <label for="category-film" class="col-form-label">Tên môn học: </label>
+                            <input type="text" class="form-control" id="daodien" name="name" tabindex="3" required>
+                        </div>
+                        <div class="col-12">
+                            <label for="category-film" class="col-form-label">Số tín chỉ: </label>
+                            <input type="number" class="form-control" id="daodien" name="credit" tabindex="3" required>
+                        </div>
+                        <div class="col-12">
+                            <label for="category-film" class="col-form-label">Ngày bắt đầu: </label>
+                            <input type="date" class="form-control" id="daodien" name="start" tabindex="3" required>
+                        </div>
+                        <div class="col-12">
+                            <label for="category-film" class="col-form-label">Ngày kết thúc: </label>
+                            <input type="date" class="form-control" id="daodien" name="end" tabindex="3" required>
+                        </div>
+                    </div>
+
+
+                    <div class="modal-footer">
+                        <button style="width:100px" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                        <button style="width:100px" type="submit" class="btn btn-primary">Thêm </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
