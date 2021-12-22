@@ -1,0 +1,63 @@
+﻿
+@{
+    ViewBag.Title = "ListSchedule";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<main>
+    <div class="container-fluid px-4">
+        <h1 class="mt-4">Danh sách môn học đã đăng ký</h1>
+
+
+        <div class="card mb-4">
+            <div class="card-header">
+            </div>
+            <div class="card-body">
+                <table id="datatablesSimple">
+                    <thead>
+                        <tr>
+                            <th>STT</th>
+                            <th>Lớp</th>
+                            <th>Mã môn học</th>
+                            <th>Tên môn học</th>
+                            <th>Số tín chỉ</th>
+                            <th>Ngày bắt đầu</th>
+                            <th>Ngày kết thúc</th>
+                            <th>Giảng viên phụ trách</th>
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr>
+                        </tr>
+                    </tfoot>
+                    <tbody>
+                        @{
+                            var index = 0;
+                        }
+                        @foreach (var item in ViewBag.List)
+                        {
+                            index++;
+                            <tr>
+                                <td>@index</td>
+                                <td>
+                                    @item.Schedule.Grade.name
+                                </td>
+                                <td>@item.Schedule.Subject.code</td>
+                                <td>@item.Schedule.Subject.name</td>
+                                <td>@item.Schedule.Subject.credit</td>
+                                <td>@String.Format("{0:yyyy-MM-dd}", item.Schedule.Subject.start_day)</td>
+                                <td>@String.Format("{0:yyyy-MM-dd}", item.Schedule.Subject.end_day)</td>
+                                <td>
+                                    @item.Schedule.User.fullname
+                                </td>
+                            </tr>
+
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+</main>
+

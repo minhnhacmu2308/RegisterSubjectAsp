@@ -132,7 +132,9 @@
     <Compile Include="Controllers\GradeController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ModulesController.cs" />
+    <Compile Include="Controllers\ScheduleController.cs" />
     <Compile Include="Controllers\SubjectController.cs" />
+    <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Daos\CourseDao.cs" />
     <Compile Include="Daos\GradeDao.cs" />
     <Compile Include="Daos\RoleDao.cs" />
@@ -214,6 +216,13 @@
     <Content Include="Views\Grade\Index.cshtml" />
     <Content Include="Views\Subject\Index.cshtml" />
     <Content Include="Views\Course\Index.cshtml" />
+    <Content Include="Views\User\Index.cshtml" />
+    <Content Include="Views\User\ListGiangVien.cshtml" />
+    <Content Include="Views\Schedule\Index.cshtml" />
+    <Content Include="Views\Grade\ListGrade.cshtml" />
+    <Content Include="Views\Grade\Detail.cshtml" />
+    <Content Include="Views\User\ListScore.cshtml" />
+    <Content Include="Views\User\ListSchedule.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

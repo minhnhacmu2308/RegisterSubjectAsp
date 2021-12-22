@@ -1,0 +1,167 @@
+﻿
+@{
+    ViewBag.Title = "Detail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<main>
+    @{ var schedule = ViewBag.Schedule;}
+    <div class="container-fluid px-4">
+        <h2 class="mt-4">Danh sách học sinh lớp <strong>@schedule.Grade.name</strong>  , môn học <strong>@schedule.Subject.name</strong> </h2>
+        <div class="card mb-4">
+            <div class="card-header">
+            </div>
+            <div class="card-body">
+                <table id="datatablesSimple">
+                    <thead>
+                        <tr>
+                            <th>STT</th>
+                            <th>Họ tên</th>
+                            <th>Giới tính</th>
+                            <th>Email </th>
+                            <th>Điểm </th>
+                            <th>Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr>
+                        </tr>
+                    </tfoot>
+                    <tbody>
+                        @{
+                            var index = 0;
+                        }
+                        @foreach (var item in ViewBag.List)
+                        {
+                            index++;
+                            var idModelDel = "exampleModalDel" + index;
+                            <tr>
+                                <td>@index</td>
+                                <td>@item.User.fullname</td>
+                                @if (item.User.gender == 0)
+                                {
+                                    <td>Nữ</td>
+                                }
+                                else
+                                {
+                                    <td>Nam</td>
+
+                                }
+                                <td>@item.User.email</td>
+                                <td>
+                                    @{ var score = new RegisterSubjectAsp.Daos.ScoreDao().getScore(item.User.id_user, item.Schedule.Subject.id_subject); }
+                                    @if (score != null)
+                                    {
+                                        <span>@score.mark</span>
+                                    }
+                                    else
+                                    {
+                                        <span>0</span>
+                                    }
+                                </td>
+                                <td>
+                                    @if (score == null)
+                                    {
+                                        <button type="button" data-bs-toggle="modal" data-bs-target="#@idModelDel" style="width:150px" class="btn btn-success"> Nhập điểm</button>
+                                        <div class="modal fade" id="@idModelDel" tabindex="-1"
+                                             aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalLabel">Nhập điểm</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                                aria-label="Close"></button>
+                                                    </div>
+
+                                                    <div class="modal-body">
+                                                        <form action="/Grade/AddScore" method="post">
+                                                            <input type="hidden" name="idsche" value="@item.id_schedule">
+                                                            <input type="hidden" name="iduser" value="@item.User.id_user">
+                                                            <input type="hidden" name="idsub" value="@item.Schedule.Subject.id_subject">
+                                                            <div class="col">
+                                                                <div class="col-12">
+                                                                    <label for="category-film" class="col-form-label">Sinh viên:</label>
+                                                                    <input type="text" class="form-control" id="daodien" value="@item.User.fullname" tabindex="3" readonly>
+                                                                </div>
+                                                                <div class="col-12">
+                                                                    <label for="category-film" class="col-form-label">Môn học: </label>
+                                                                    <input type="text" class="form-control" id="daodien" value="@item.Schedule.Subject.name" tabindex="3" readonly>
+                                                                </div>
+                                                                <div class="col-12">
+                                                                    <label for="category-film" class="col-form-label">Điểm: </label>
+                                                                    <input type="number" step="any" class="form-control" id="daodien" name="mark" min="1" max="10" tabindex="3" required>
+                                                                </div>
+                                                            </div>
+                                                            <div class="modal-footer" style="margin-top: 20px">
+                                                                <button style="width:100px" type="button" class="btn btn-secondary"
+                                                                        data-bs-dismiss="modal">
+                                                                    Đóng
+                                                                </button>
+                                                                <button style="width:100px" type="submit" class="btn btn-success"> Nhập</button>
+                                                            </div>
+
+                                                        </form>
+
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <button type="button" data-bs-toggle="modal" data-bs-target="#@idModelDel" style="width:150px" class="btn btn-primary"> Sửa điểm</button>
+                                        <div class="modal fade" id="@idModelDel" tabindex="-1"
+                                             aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalLabel">Sửa điểm</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                                aria-label="Close"></button>
+                                                    </div>
+
+                                                    <div class="modal-body">
+                                                        <form action="/Grade/EditScore" method="post">
+                                                            <input type="hidden" name="idsche" value="@item.id_schedule">
+                                                            <input type="hidden" name="idscore" value="@score.id_score">
+                                                            <div class="col">
+                                                                <div class="col-12">
+                                                                    <label for="category-film" class="col-form-label">Sinh viên:</label>
+                                                                    <input type="text" class="form-control" id="daodien" value="@item.User.fullname" tabindex="3" readonly>
+                                                                </div>
+                                                                <div class="col-12">
+                                                                    <label for="category-film" class="col-form-label">Môn học: </label>
+                                                                    <input type="text" class="form-control" id="daodien" value="@item.Schedule.Subject.name" tabindex="3" readonly>
+                                                                </div>
+                                                                <div class="col-12">
+                                                                    <label for="category-film" class="col-form-label">Điểm: </label>
+                                                                    <input type="number" step="any" class="form-control" id="daodien" name="mark" value="@score.mark" min="1" max="10" tabindex="3" required>
+                                                                </div>
+                                                            </div>
+                                                            <div class="modal-footer" style="margin-top: 20px">
+                                                                <button style="width:100px" type="button" class="btn btn-secondary"
+                                                                        data-bs-dismiss="modal">
+                                                                    Đóng
+                                                                </button>
+                                                                <button style="width:100px" type="submit" class="btn btn-primary"> Sửa</button>
+                                                            </div>
+
+                                                        </form>
+
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+</main>

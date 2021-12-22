@@ -41,7 +41,7 @@
                         <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
                         Chương trình đào tạo
                     </a>
-                    <a class="nav-link collapsed" href="/Score/Rank">
+                    <a class="nav-link collapsed" href="/Schedule/Index">
                         <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
                         Quản lý lịch
                     </a>
@@ -49,40 +49,30 @@
                 else if (userInfomatiom.Role.id_role == 2)
                 {
 
-                    <a class="nav-link collapsed" href="/User/Index">
+                    <a class="nav-link collapsed" href="/Grade/ListGrade">
                         <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
-                        Quản lý học sinh
+                        Danh sách lớp
 
-                    </a>
-                    <a class="nav-link collapsed" href="/Score/Index">
-                        <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
-                        Quản lý điểm
-
-                    </a>
-                    <a class="nav-link collapsed" href="/Score/Rank">
-                        <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
-                        Xếp hạng
                     </a>
                 }
                 else
                 {
-                    <a class="nav-link collapsed" href="/User/Infor">
-                        <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
-                        Xem thông tin
 
+                    <a class="nav-link collapsed" href="/User/ListScore">
+                        <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                        Xem điểm
                     </a>
                     <a class="nav-link collapsed" href="/Schedule/Index">
                         <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
-                        Xem thời khóa biểu
+                        Đăng ký môn học
                     </a>
-                    <a class="nav-link collapsed" href="/Score/ListScoreForStudent?id=@userInfomatiom.id_user">
+                    <a class="nav-link collapsed" href="/User/ListSchedule">
                         <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
-                        Xem điểm
-
+                        Môn học đã đăng ký
                     </a>
-                    <a class="nav-link collapsed" href="/Score/Rank">
+                    <a class="nav-link collapsed" href="/Course/Index">
                         <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
-                        Xếp hạng
+                        Chương trình đào tạo
                     </a>
                 }
             </div>

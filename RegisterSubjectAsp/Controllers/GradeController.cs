@@ -11,6 +11,8 @@ namespace RegisterSubjectAsp.Controllers
     public class GradeController : Controller
     {
         GradeDao gradeDao = new GradeDao();
+        ScoreDao scoreDao = new ScoreDao();
+        ScheduleDao scheduleDao = new ScheduleDao();
         // GET: Subject
         public ActionResult Index(string msg)
         {
@@ -18,7 +20,18 @@ namespace RegisterSubjectAsp.Controllers
             ViewBag.Msg = msg;
             return View();
         }
-
+        public ActionResult ListGrade()
+        {
+            var user = (User)Session["USER"];
+            ViewBag.List = scheduleDao.listGrade(user.id_user);
+            return View();
+        }
+        public ActionResult Detail(int id)
+        {
+            ViewBag.Schedule = scheduleDao.getSchedule(id);
+            ViewBag.List = scheduleDao.getDetail(id);
+            return View();
+        }
         public ActionResult Delete(FormCollection form)
         {
             var id = Int32.Parse(form["id"]);
@@ -41,7 +54,25 @@ namespace RegisterSubjectAsp.Controllers
                 return RedirectToAction("Index", new { msg = "2" });
             }
         }
-
+        public ActionResult AddScore(FormCollection form)
+        {
+            int idsche = Int32.Parse(form["idsche"]);
+            Score score = new Score();
+            score.id_user = Int32.Parse(form["iduser"]);
+            score.id_subject = Int32.Parse(form["idsub"]);
+            score.mark = float.Parse(form["mark"]);
+            scoreDao.add(score);
+            return RedirectToAction("Detail", new { id = idsche });
+        }
+        public ActionResult EditScore(FormCollection form)
+        {
+            int idsche = Int32.Parse(form["idsche"]);
+            Score score = new Score();
+            score.id_score = Int32.Parse(form["idscore"]);
+            score.mark = float.Parse(form["mark"]);
+            scoreDao.update(score);
+            return RedirectToAction("Detail", new { id = idsche });
+        }
         public ActionResult Update(FormCollection form)
         {
             Grade grade = new Grade();

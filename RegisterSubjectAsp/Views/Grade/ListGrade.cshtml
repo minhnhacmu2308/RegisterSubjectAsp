@@ -1,0 +1,66 @@
+﻿
+@{
+    ViewBag.Title = "ListGrade";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<main>
+    <div class="container-fluid px-4">
+        <h1 class="mt-4">Danh sách lớp giảng dạy</h1>
+
+
+        <div class="card mb-4">
+            <div class="card-header">
+            </div>
+            <div class="card-body">
+                <table id="datatablesSimple">
+                    <thead>
+                        <tr>
+                            <th>STT</th>
+                            <th>Lớp</th>
+                            <th>Mã môn học</th>
+                            <th>Tên môn học</th>
+                            <th>Số tín chỉ</th>
+                            <th>Ngày bắt đầu</th>
+                            <th>Ngày kết thúc</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr>
+                        </tr>
+                    </tfoot>
+                    <tbody>
+                        @{
+                            var index = 0;
+                        }
+                        @foreach (var item in ViewBag.List)
+                        {
+                            index++;
+                        <tr>
+                            <td>@index</td>
+                            <td>
+                                @item.Grade.name
+                            </td>
+                            <td>@item.Subject.code</td>
+                            <td>@item.Subject.name</td>
+                            <td>@item.Subject.credit</td>
+                            <td>@String.Format("{0:yyyy-MM-dd}", item.Subject.start_day)</td>
+                            <td>@String.Format("{0:yyyy-MM-dd}", item.Subject.end_day)</td>
+                            <td>
+                                <button style="width:175px" type="button" class="btn btn-warning">
+                                    <a style="text-decoration:none;color:black;" href="/Grade/Detail/@item.id_schedule">Danh sách sinh viên</a> 
+                                </button>
+                            </td>
+                        </tr>
+
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+</main>
+
+

@@ -11,9 +11,16 @@
 }
 
 <main>
+    @{ var userInfomatiom = (RegisterSubjectAsp.Models.User)Session["USER"]; }
     <div class="container-fluid px-4">
-        <h1 class="mt-4">Quản lí chương trình đào tạo</h1>
-
+        @if (userInfomatiom.Role.id_role == 1)
+        {
+            <h1 class="mt-4">Quản lí chương trình đào tạo</h1>
+        }
+        else
+        {
+            <h1 class="mt-4">Danh sách chương trình đào tạo</h1>
+        }
 
         <div class="card mb-4">
             <div class="card-header">
@@ -33,11 +40,18 @@
                     }
 
                 }
-                <button type="button" class="btn btn-success" data-bs-toggle="modal"
-                        data-bs-target="#exampleModalAdd">
-                    Thêm mới
-                </button>
-            </div>
+                @if (userInfomatiom.Role.id_role == 1)
+                {
+                    <button type="button" class="btn btn-success" data-bs-toggle="modal"
+                            data-bs-target="#exampleModalAdd">
+                        Thêm mới
+                    </button>
+                }
+                else
+                {
+
+                }
+                </div>
             <div class="card-body">
                 <table id="datatablesSimple">
                     <thead>
@@ -47,8 +61,15 @@
                             <th>Tên môn học</th>
                             <th>Tín chỉ</th>
                             <th>Khoa/Bộ môn</th>
-                            <th>Thao tác</th>
-                        </tr>
+                            @if (userInfomatiom.Role.id_role == 1)
+                            {
+                                <th>Thao tác</th>
+                            }
+                            else
+                            {
+
+                            }
+                            </tr>
                     </thead>
                     <tfoot>
                         <tr>
@@ -63,12 +84,14 @@
                             index++;
                             var idModelDel = "exampleModalDel" + item.id_course;
                             var idEx1 = "#exampleModalLabel" + item.id_course;
-                            <tr>
-                                <td>@index</td>
-                                <td>@item.Subject.code</td>
-                                <td>@item.Subject.name</td>
-                                <td>@item.Subject.credit</td>
-                                <td>@item.faculty</td>
+                        <tr>
+                            <td>@index</td>
+                            <td>@item.Subject.code</td>
+                            <td>@item.Subject.name</td>
+                            <td>@item.Subject.credit</td>
+                            <td>@item.faculty</td>
+                            @if (userInfomatiom.Role.id_role == 1)
+                            {
                                 <td>
 
                                     <button style="width:100px" type="button" class="btn btn-primary" data-bs-toggle="modal"
@@ -107,6 +130,11 @@
                                         </div>
                                     </div>
                                 </td>
+                            }
+                            else
+                            {
+
+                            }
                             </tr>
                             var idEx = "exampleModalLabel" + item.id_course;
                             <div class="modal fade" id="@idEx" tabindex="-1"
@@ -141,7 +169,7 @@
                                                             }
                                                         </select>
                                                     </div>
-                                                    
+
 
                                                 </div>
 

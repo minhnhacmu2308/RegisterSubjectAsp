@@ -1,0 +1,233 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<main>
+    @{ var userInfomatiom = (RegisterSubjectAsp.Models.User)Session["USER"]; }
+    <div class="container-fluid px-4">
+        <h1 class="mt-4">Danh sách lịch đăng ký môn học</h1>
+
+
+        <div class="card mb-4">
+            <div class="card-header">
+                @if (ViewBag.Msg != null)
+                {
+                    if (ViewBag.Msg == "1")
+                    {
+                        <div class="alert alert-success">
+                            <strong>Thành công</strong>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="alert alert-danger">
+                            <strong>Lịch này đã tồn tại</strong>
+                        </div>
+                    }
+
+                }
+                @if (userInfomatiom.Role.id_role == 1)
+                {
+                    <button type="button" class="btn btn-success" data-bs-toggle="modal"
+                            data-bs-target="#exampleModalAdd">
+                        Thêm mới
+                    </button>
+                }
+                else
+                {
+
+                }
+                </div>
+            <div class="card-body">
+                <table id="datatablesSimple">
+                    <thead>
+                        <tr>
+                            <th>STT</th>
+                            <th>Môn học </th>
+                            <th>Lớp</th>
+                            <th>Giảng viên</th>
+                            <th>Ngày mở đăng ký</th>
+                            <th>Ngày đóng đăng ký</th>
+                            <th>Trạng thái</th>
+                            @if (userInfomatiom.Role.id_role == 1)
+                            {
+                                
+                            }
+                            else
+                            {
+                                <th>Thao tác</th>
+                            }
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr>
+                        </tr>
+                    </tfoot>
+                    <tbody>
+                        @{
+                            var index = 0;
+                            
+                        }
+                        @foreach (var item in ViewBag.List)
+                        {
+                            index++;
+                            var idModelDel = "exampleModalDel" + index;
+                        <tr>
+                            <td>@index</td>
+                            <td data-toggle="tooltip" data-html="true" data-placement="top" title="@item.Subject.code - @item.Subject.name - @item.Subject.credit tín chỉ - Bắt đầu học từ @String.Format("{0:yyyy-MM-dd}", item.Subject.start_day) đến ngày @String.Format("{0:yyyy-MM-dd}", item.Subject.end_day)">
+                                @item.Subject.name
+                            </td>
+                            <td>@item.Grade.name</td>
+                            <td>@item.User.fullname</td>
+                            <td>@String.Format("{0:yyyy-MM-dd}", item.open_day)</td>
+                            <td>@String.Format("{0:yyyy-MM-dd}", item.close_day)</td>
+                            @if (item.status == 0)
+                            {
+                                <td><span class="badge badge-danger" style="background-color:goldenrod;font-size:12px">Đang mở</span></td>
+                            }
+                            else
+                            {
+                                <td><span class="badge badge-danger" style="background-color: firebrick; font-size: 12px ">Đã đóng</span></td>
+                            }
+                            @if (userInfomatiom.Role.id_role == 1)
+                            {
+
+                            }
+                            else
+                            {
+                                var result = new RegisterSubjectAsp.Daos.ScheduleDao().checkRegister(item.id_schedule, userInfomatiom.id_user);
+                                if (result)
+                                {
+
+                                }
+                                else
+                                {
+                        <td>
+                            <button type="button" data-bs-toggle="modal" data-bs-target="#@idModelDel" style="width:150px" class="btn btn-success"> Đăng ký</button>
+                            <div class="modal fade" id="@idModelDel" tabindex="-1"
+                                 aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Xác nhận Đăng ký môn học</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close"></button>
+                                        </div>
+
+                                        <div class="modal-body">
+                                            <form action="/Schedule/AddSchedule" method="post">
+                                                <input type="hidden" name="idsche" value="@item.id_schedule">
+                                                <input type="hidden" name="iduser" value="@userInfomatiom.id_user">
+                                                <div class="col">
+                                                    <div class="col-12">
+                                                        <label for="category-film" class="col-form-label">Mã môn học:</label>
+                                                        <input type="text" class="form-control" id="daodien" value="@item.Subject.code" tabindex="3" readonly>
+                                                    </div>
+                                                    <div class="col-12">
+                                                        <label for="category-film" class="col-form-label">Tên Môn học: </label>
+                                                        <input type="text" class="form-control" id="daodien" value="@item.Subject.name" tabindex="3" readonly>
+                                                    </div>
+                                                    <div class="col-12">
+                                                        <label for="category-film" class="col-form-label">Số tín chỉ: </label>
+                                                        <input type="text" class="form-control" id="daodien" value="@item.Subject.credit" tabindex="3" readonly>
+                                                    </div>
+                                                    <div class="col-12">
+                                                        <label for="category-film" class="col-form-label">Giảng viên phụ trách: </label>
+                                                        <input type="text" class="form-control" id="daodien" value="@item.User.fullname" tabindex="3" readonly>
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer" style="margin-top: 20px">
+                                                    <button style="width:100px" type="button" class="btn btn-secondary"
+                                                            data-bs-dismiss="modal">
+                                                        Đóng
+                                                    </button>
+                                                    <button style="width:100px" type="submit" class="btn btn-success"> Đăng ký</button>
+                                                </div>
+
+                                            </form>
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                                }
+                            }
+                        </tr>
+
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+</main>
+<!-- Modal Add-->
+<div class="modal fade" id="exampleModalAdd" tabindex="-1"
+     aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Thêm </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form enctype="multipart/form-data" action="/Schedule/Add" method="post">
+                    <div class="col">
+                        <div class="col-12">
+                            <label for="category-film" class="col-form-label">Môn học: </label>
+                            <select class="form-select" aria-label="Default select example" id="theloai" tabindex="8" name="idsub" required>
+                                <option value="" selected>Chọn môn học</option>
+                                @foreach (var item1 in ViewBag.Sub)
+                                {
+                            <option value="@item1.id_subject">@item1.code - @item1.name - @item1.credit tín chỉ - Bắt đầu học từ @String.Format("{0:yyyy-MM-dd}", item1.start_day) đến ngày @String.Format("{0:yyyy-MM-dd}", item1.end_day)</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="row">
+                            <div class="col-6">
+                                <label for="category-film" class="col-form-label">Giảng viên: </label>
+                                <select class="form-select" aria-label="Default select example" id="theloai" tabindex="8" name="iduser" required>
+                                    <option value="" selected>Chọn giảng viên</option>
+                                    @foreach (var item2 in ViewBag.User)
+                                    {
+                                        <option value="@item2.id_user">@item2.fullname</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-6">
+                                <label for="category-film" class="col-form-label">Lớp: </label>
+                                <select class="form-select" aria-label="Default select example" id="theloai" tabindex="8" name="idgrade" required>
+                                    <option value="" selected>Chọn lớp</option>
+                                    @foreach (var item3 in ViewBag.Grade)
+                                    {
+                                        <option value="@item3.id_grade">@item3.name</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6">
+                                <label for="category-film" class="col-form-label">Ngày mở đăng ký: </label>
+                                <input type="date" class="form-control" id="daodien" name="open" tabindex="3" required>
+                            </div>
+                            <div class="col-6">
+                                <label for="category-film" class="col-form-label">Ngày đóng đăng ký: </label>
+                                <input type="date" class="form-control" id="daodien" name="close" tabindex="3" required>
+                            </div>
+                        </div>
+                    </div>
+                        <div class="modal-footer">
+                            <button style="width:100px" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                            <button style="width:100px" type="submit" class="btn btn-primary">Thêm </button>
+                        </div>
+</form>
+            </div>
+        </div>
+    </div>
+</div>
+
