@@ -53,7 +53,7 @@
                             <th>Trạng thái</th>
                             @if (userInfomatiom.Role.id_role == 1)
                             {
-                                
+                                <th>Thao tác</th>
                             }
                             else
                             {
@@ -74,6 +74,7 @@
                         {
                             index++;
                             var idModelDel = "exampleModalDel" + index;
+                            var idModelDong = "exampleModalDong" + index;
                         <tr>
                             <td>@index</td>
                             <td data-toggle="tooltip" data-html="true" data-placement="top" title="@item.Subject.code - @item.Subject.name - @item.Subject.credit tín chỉ - Bắt đầu học từ @String.Format("{0:yyyy-MM-dd}", item.Subject.start_day) đến ngày @String.Format("{0:yyyy-MM-dd}", item.Subject.end_day)">
@@ -93,67 +94,129 @@
                             }
                             @if (userInfomatiom.Role.id_role == 1)
                             {
-
-                            }
-                            else
-                            {
-                                var result = new RegisterSubjectAsp.Daos.ScheduleDao().checkRegister(item.id_schedule, userInfomatiom.id_user);
-                                if (result)
+                                if (item.status == 0)
                                 {
+                                    <td>
+                                        <button type="button" data-bs-toggle="modal" data-bs-target="#@idModelDong" style="width:150px" class="btn btn-success"> Đóng đăng ký</button>
+                                        <div class="modal fade" id="@idModelDong" tabindex="-1"
+                                             aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalLabel">Xác nhận đóng đăng ký môn học</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                                aria-label="Close"></button>
+                                                    </div>
 
+                                                    <div class="modal-body">
+                                                        <form action="/Schedule/ChangeStatus" method="post">
+                                                            <input type="hidden" name="idschedule" value="@item.id_schedule">
+                                                            <div class="col">
+                                                                <div class="col-12">
+                                                                    <label for="category-film" class="col-form-label">Mã môn học:</label>
+                                                                    <input type="text" class="form-control" id="daodien" value="@item.Subject.code" tabindex="3" readonly>
+                                                                </div>
+                                                                <div class="col-12">
+                                                                    <label for="category-film" class="col-form-label">Tên Môn học: </label>
+                                                                    <input type="text" class="form-control" id="daodien" value="@item.Subject.name" tabindex="3" readonly>
+                                                                </div>
+                                                                <div class="col-12">
+                                                                    <label for="category-film" class="col-form-label">Số tín chỉ: </label>
+                                                                    <input type="text" class="form-control" id="daodien" value="@item.Subject.credit" tabindex="3" readonly>
+                                                                </div>
+                                                                <div class="col-12">
+                                                                    <label for="category-film" class="col-form-label">Giảng viên phụ trách: </label>
+                                                                    <input type="text" class="form-control" id="daodien" value="@item.User.fullname" tabindex="3" readonly>
+                                                                </div>
+                                                            </div>
+                                                            <div class="modal-footer" style="margin-top: 20px">
+                                                                <button style="width:100px" type="button" class="btn btn-secondary"
+                                                                        data-bs-dismiss="modal">
+                                                                    Đóng
+                                                                </button>
+                                                                <button style="width:100px" type="submit" class="btn btn-success"> Đóng đăng ký</button>
+                                                            </div>
+
+                                                        </form>
+
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
                                 }
                                 else
                                 {
-                        <td>
-                            <button type="button" data-bs-toggle="modal" data-bs-target="#@idModelDel" style="width:150px" class="btn btn-success"> Đăng ký</button>
-                            <div class="modal fade" id="@idModelDel" tabindex="-1"
-                                 aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="exampleModalLabel">Xác nhận Đăng ký môn học</h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                    aria-label="Close"></button>
-                                        </div>
 
-                                        <div class="modal-body">
-                                            <form action="/Schedule/AddSchedule" method="post">
-                                                <input type="hidden" name="idsche" value="@item.id_schedule">
-                                                <input type="hidden" name="iduser" value="@userInfomatiom.id_user">
-                                                <div class="col">
-                                                    <div class="col-12">
-                                                        <label for="category-film" class="col-form-label">Mã môn học:</label>
-                                                        <input type="text" class="form-control" id="daodien" value="@item.Subject.code" tabindex="3" readonly>
+                                }
+                            }
+                            else
+                            {
+                                if (item.status == 0)
+                                {
+                                    var result = new RegisterSubjectAsp.Daos.ScheduleDao().checkRegister(item.id_schedule, userInfomatiom.id_user);
+                                    if (result)
+                                    {
+
+                                    }
+                                    else
+                                    {
+                                    <td>
+                                        <button type="button" data-bs-toggle="modal" data-bs-target="#@idModelDel" style="width:150px" class="btn btn-success"> Đăng ký</button>
+                                        <div class="modal fade" id="@idModelDel" tabindex="-1"
+                                             aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalLabel">Xác nhận Đăng ký môn học</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                                aria-label="Close"></button>
                                                     </div>
-                                                    <div class="col-12">
-                                                        <label for="category-film" class="col-form-label">Tên Môn học: </label>
-                                                        <input type="text" class="form-control" id="daodien" value="@item.Subject.name" tabindex="3" readonly>
+
+                                                    <div class="modal-body">
+                                                        <form action="/Schedule/AddSchedule" method="post">
+                                                            <input type="hidden" name="idsche" value="@item.id_schedule">
+                                                            <input type="hidden" name="iduser" value="@userInfomatiom.id_user">
+                                                            <div class="col">
+                                                                <div class="col-12">
+                                                                    <label for="category-film" class="col-form-label">Mã môn học:</label>
+                                                                    <input type="text" class="form-control" id="daodien" value="@item.Subject.code" tabindex="3" readonly>
+                                                                </div>
+                                                                <div class="col-12">
+                                                                    <label for="category-film" class="col-form-label">Tên Môn học: </label>
+                                                                    <input type="text" class="form-control" id="daodien" value="@item.Subject.name" tabindex="3" readonly>
+                                                                </div>
+                                                                <div class="col-12">
+                                                                    <label for="category-film" class="col-form-label">Số tín chỉ: </label>
+                                                                    <input type="text" class="form-control" id="daodien" value="@item.Subject.credit" tabindex="3" readonly>
+                                                                </div>
+                                                                <div class="col-12">
+                                                                    <label for="category-film" class="col-form-label">Giảng viên phụ trách: </label>
+                                                                    <input type="text" class="form-control" id="daodien" value="@item.User.fullname" tabindex="3" readonly>
+                                                                </div>
+                                                            </div>
+                                                            <div class="modal-footer" style="margin-top: 20px">
+                                                                <button style="width:100px" type="button" class="btn btn-secondary"
+                                                                        data-bs-dismiss="modal">
+                                                                    Đóng
+                                                                </button>
+                                                                <button style="width:100px" type="submit" class="btn btn-success"> Đăng ký</button>
+                                                            </div>
+
+                                                        </form>
+
                                                     </div>
-                                                    <div class="col-12">
-                                                        <label for="category-film" class="col-form-label">Số tín chỉ: </label>
-                                                        <input type="text" class="form-control" id="daodien" value="@item.Subject.credit" tabindex="3" readonly>
-                                                    </div>
-                                                    <div class="col-12">
-                                                        <label for="category-film" class="col-form-label">Giảng viên phụ trách: </label>
-                                                        <input type="text" class="form-control" id="daodien" value="@item.User.fullname" tabindex="3" readonly>
-                                                    </div>
+
                                                 </div>
-                                                <div class="modal-footer" style="margin-top: 20px">
-                                                    <button style="width:100px" type="button" class="btn btn-secondary"
-                                                            data-bs-dismiss="modal">
-                                                        Đóng
-                                                    </button>
-                                                    <button style="width:100px" type="submit" class="btn btn-success"> Đăng ký</button>
-                                                </div>
-
-                                            </form>
-
+                                            </div>
                                         </div>
+                                    </td>
+                                    }
+                                }
+                                else
+                                {
 
-                                    </div>
-                                </div>
-                            </div>
-                        </td>
                                 }
                             }
                         </tr>

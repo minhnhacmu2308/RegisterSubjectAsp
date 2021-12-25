@@ -27,6 +27,12 @@ namespace RegisterSubjectAsp.Daos
             myDb.schedules.Add(schedule);
             myDb.SaveChanges();
         }
+        public void changeStatus(Schedule schedule)
+        {
+            var obj = myDb.schedules.FirstOrDefault(p => p.id_schedule == schedule.id_schedule);
+            obj.status = schedule.status;
+            myDb.SaveChanges();
+        }
         public void addSchedule(ScheduleStudent scheduleStudent)
         {
             string sql = "INSERT INTO ScheduleStudents(id_schedule,id_user) VALUES('" + scheduleStudent.id_schedule + "','" + scheduleStudent.id_user + "') ";

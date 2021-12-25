@@ -38,6 +38,14 @@ namespace RegisterSubjectAsp.Controllers
             scheduleDao.add(schedule);
             return RedirectToAction("Index", new { msg = "1" });
         }
+        public ActionResult ChangeStatus(FormCollection form)
+        {
+            Schedule schedule = new Schedule();
+            schedule.id_schedule = Int32.Parse(form["idschedule"]);
+            schedule.status = 1;
+            scheduleDao.changeStatus(schedule);
+            return RedirectToAction("Index", new { msg = "1" });
+        }
         public ActionResult AddSchedule(FormCollection form)
         {
             ScheduleStudent scheduleStudent = new ScheduleStudent();
