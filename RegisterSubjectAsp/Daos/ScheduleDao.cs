@@ -75,5 +75,11 @@ namespace RegisterSubjectAsp.Daos
                 return false;
             }
         }
+        public void deleteRegister(int idsche, int iduser)
+        {
+            var obj = myDb.scheduleStudents.FirstOrDefault(p => p.id_schedule == idsche && p.id_user == iduser);
+            myDb.scheduleStudents.Remove(obj);
+            myDb.SaveChanges();
+        }
     }
 }

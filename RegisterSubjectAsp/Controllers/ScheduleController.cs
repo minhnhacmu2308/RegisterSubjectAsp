@@ -54,5 +54,12 @@ namespace RegisterSubjectAsp.Controllers
             scheduleDao.addSchedule(scheduleStudent);
             return RedirectToAction("Index", new { msg = "1" });
         }
+        public ActionResult DeleteRe(FormCollection form)
+        {
+            int id_user = Int32.Parse(form["iduser"]);
+            int id_schedule = Int32.Parse(form["idsche"]);
+            scheduleDao.deleteRegister(id_schedule,id_user);
+            return RedirectToAction("Index", new { msg = "1" });
+        }
     }
 }
